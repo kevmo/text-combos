@@ -23,6 +23,7 @@
         //
 
         var form = document.forms.numbers;
+        var resultsDiv = document.querySelector('.results');
 
         //
         // Helper functions and data
@@ -97,7 +98,6 @@
         }
 
         function attachWordsToDOM(words) {
-            var resultsDiv = document.querySelector('.results');
             // make DOM element for each word
             var wordDivs = words.map(function(word) {
                 return makeWordDiv(word);
@@ -117,6 +117,9 @@
         //
 
         form.onsubmit = function(e) {
+            // if previous results on page, clear
+            resultsDiv.innerHTML = "";
+
             var words = getAllPossibleWords(form.input.value);
             attachWordsToDOM(words);
             e.preventDefault();
