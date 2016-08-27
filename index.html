@@ -3,23 +3,19 @@
 <head>
 </head>
 <body>
-
     <form action="#" name="numbers">
         <input type="text" name="input">
         <button>Make all combinations</button>
     </form>
-
-    <div class="results">
-
-    </div>
+    <div class="results"></div>
 
     <script>
+
         //
         // DOM elements for reference
         //
 
         var form = document.forms.numbers;
-        var resultsDiv = document.querySelector('.results');
 
         //
         // Helper functions and data
@@ -36,9 +32,22 @@
             9: ['w', 'x', 'y', 'z']
         };
 
-        // expects numbers to be an array of numbers
+        // Input: Expects numbers argument to be an array of numbers
+        // Output: map numbers to letters arrays --> returns an array of arrays
         function convertNumbersToLettersArrays(numbers) {
-            return numbers.map(function(n){return numberToLettersMap[Number(n)]});
+            var validNumbers = [];
+            var n;
+
+            // remove all the 1s and 0s (no corresponding value in map)
+            for (var i in numbers) {
+                n = numbers[i];
+
+                if ((n !== '0') && (n !== '1')){
+                    validNumbers.push(n);
+                }
+            }
+
+            return validNumbers.map(function(n){return numberToLettersMap[Number(n)];});
         }
 
         //
@@ -49,16 +58,26 @@
             if (arr.length == 1) {
                 return arr[0];
             } else {
-                var result = [];
-                var allCasesOfRest = allPossibleCases(arr.slice(1));  // recur with the rest of array
-                for (var i = 0; i < allCasesOfRest.length; i++) {
+                var results = [];
+
+                var rest = allPossibleWords(arr.slice(1));
+
+                for (var i = 0; i < rest.length; i++) {
                     for (var j = 0; j < arr[0].length; j++) {
-                        result.push(arr[0][j] + allCasesOfRest[i]);
+                        results.push(arr[0][j] + rest[i]);
                     }
                 }
-                return result;
-            }
 
+                return results;
+            }
+        }
+
+        function makeWordDiv(word) {
+            var div = document.createElement("DIV");
+            div.classList = ["word"];
+            div.innerHTML = word;
+
+            return div;
         }
 
         //
@@ -66,10 +85,22 @@
         //
 
         function getAllPossibleWords(input) {
-
+            var lettersArray = convertNumbersToLettersArrays(input.split(""));
+            return allPossibleWords(lettersArray);
         }
 
         function attachWordsToDOM(words) {
+            var resultsDiv = document.querySelector('.results');
+            // make DOM element for each word
+            var wordDivs = words.map(function(word) {
+                return makeWordDiv(word);
+            });
+
+
+            // append to DOM
+            wordDivs.forEach(function(wordDiv) {
+                resultsDiv.appendChild(wordDiv);
+            })
 
         }
 
@@ -77,10 +108,12 @@
         //
         // fire the missile
         //
-        
+
         form.onsubmit = function(e) {
             var words = getAllPossibleWords(form.input.value);
-            attachPossibleWordsToDOM(words);
+            attachWordsToDOM(words);
+
+            e.preventDefault();
         }
     </script>
 </body>
