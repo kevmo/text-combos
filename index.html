@@ -14,10 +14,16 @@
     </div>
 
     <script>
+        //
         // DOM elements for reference
+        //
+
         var form = document.forms.numbers;
         var resultsDiv = document.querySelector('.results');
 
+        //
+        // Helper functions and data
+        //
 
         var numberToLettersMap = {
             2: ['a', 'b', 'c'],
@@ -31,8 +37,13 @@
         };
 
         // expects numbers to be an array of numbers
-        function convertNumbersToLettersArrays(numbers)
+        function convertNumbersToLettersArrays(numbers) {
+            return numbers.map(function(n){return numberToLettersMap[Number(n)]});
+        }
 
+        //
+        // The permutations algorithm
+        //
 
         function allPossibleWords(arr) {
             if (arr.length == 1) {
@@ -63,7 +74,10 @@
         }
 
 
+        //
         // fire the missile
+        //
+        
         form.onsubmit = function(e) {
             var words = getAllPossibleWords(form.input.value);
             attachPossibleWordsToDOM(words);
