@@ -1,12 +1,19 @@
 <html>
     <title>Text Permutations</title>
+    <style>
+        * {
+            text-align: center;
+        }
+    </style>
 <head>
 </head>
 <body>
     <form action="#" name="numbers">
+        <label for="input">Enter a number:</label>
         <input type="text" name="input">
-        <button>Make all combinations</button>
+        <button>Make all combinations!</button>
     </form>
+    <h3>Possible Words</h3>
     <div class="results"></div>
 
     <script>
@@ -112,7 +119,6 @@
         form.onsubmit = function(e) {
             var words = getAllPossibleWords(form.input.value);
             attachWordsToDOM(words);
-
             e.preventDefault();
         }
     </script>
